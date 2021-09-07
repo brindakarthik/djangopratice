@@ -77,11 +77,13 @@ def searchproduct(request):
 
 
 def updateproduct(request):
-    product=Product.objects.filter(name=request.POST['name'])
+
+    product=Product.objects.filter(name=request.POST['name'].strip())
+
     for i in product:
-        print(i)
+
         id=i.id
-        print(id)
+
     Product.objects.filter(id=id).update(price=request.POST['price'],qty=request.POST['qty'])
     return  render(request,"product.html")
 
