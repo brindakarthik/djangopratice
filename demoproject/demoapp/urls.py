@@ -14,5 +14,6 @@ path('save',save,name='save'),
     path('product',product,name='product'),
     path('addproduct',addproduct,name='addproduct'),
     path('searchproduct',searchproduct,name='searchproduct'),
-    path('updateproduct',updateproduct,name='updateproduct')
+    path('updateproduct',updateproduct,name='updateproduct'),
+    path('deleteproduct',deleteproduct,name='deleteproduct')
 ]

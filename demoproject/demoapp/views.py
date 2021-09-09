@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.mail import send_mail, EmailMessage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import User, Product
@@ -15,6 +17,8 @@ from .models import User, Product
 #         res[i.id]={"name":i.name,"price":i.price,"qty":i.qty}
 #     print(res)
 #     return render(request,"index.html",{'data':res})
+
+
 
 def calculate(request):
     x=request.POST['num1']
@@ -86,6 +90,22 @@ def updateproduct(request):
 
     Product.objects.filter(id=id).update(price=request.POST['price'],qty=request.POST['qty'])
     return  render(request,"product.html")
+
+def deleteproduct(request):
+    # product=Product.objects.filter(name=request.POST['name'].strip())
+    #
+    # for i in product:
+    #     id=i.id
+    #
+    # Product.objects.filter(id=id).delete()
+    #send_mail("Test Mail",f"Product Id : {id} has been delete from db",settings.EMAIL_HOST_USER,['se.murugaiyan@gmail.com'])
+    email=EmailMessage("Test Mail","<h1 style='color:pink;border:solid'>Welcome to Test Mail</h1>",settings.EMAIL_HOST_USER,["se.murugaiyan@gmail.com"])
+    email.content_subtype='html'
+    email.send()
+    return render(request,"product.html")
+
+
+
 
 
 
