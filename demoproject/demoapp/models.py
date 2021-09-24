@@ -14,3 +14,12 @@ class Product(models.Model):
     qty=models.IntegerField()
 
 
+class Employee(models.Model):
+    name=models.CharField(max_length=50)
+    resume=models.FileField(upload_to='resume')
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+     ID <input name="id">
+    Name <input name="product">
+    <br>
+    Price
+    <input type="text" name="price">
+    <br>Qty
+    <input name="qty">
+    <input  formaction="/saveproduct" type="submit" value="Save"/>
+    <input formaction="/editproduct" type="submit" value="Update"/>
+
+    <input formaction="/deleteproduct" type="submit" value="Delete"/>
+
+</form>
+<br>
+<br>
+<table border="2">
+    <tr>
+        <th>Id</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Qty</th>
+    </tr>
+    {% for i in data %}
+    <tr>
+        <td>{{i.id}}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.price}}</td>
+        <td>{{i.qty}}</td>
+
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

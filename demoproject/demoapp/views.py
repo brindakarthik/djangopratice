@@ -2,8 +2,17 @@ from django.conf import settings
 from django.core.mail import send_mail, EmailMessage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import User, Product
+from .models import User, Product,Employee
 
+def index(request):
+    return render(request,"employee.html")
+
+def uploadresume(request):
+    if request.method == 'POST':
+        obj = Employee.objects.create(name=request.POST['employeename'],resume=request.FILES['resume'])
+        obj.save()
+
+        return render(request,'employee.html',{'data':Employee.objects.all()})
 
 # from .models import Product
 # # Create your views here.
@@ -35,8 +44,8 @@ def save(request):
     email=request.GET['email']
     job=request.GET['job']
     password=request.GET['password']
-    obj=User(name=fname,mobile=mobile,email=email,type=job,password=password)
-    obj.save()
+
+
     # return HttpResponse("Account has been created successfully")
     return render(request,"register.html",{"msg":"Account has been created successfully"})
 
@@ -63,7 +72,7 @@ def checklogin(request):
         return redirect(login)
 
 def product(request):
-    return render(request,"product.html")
+    return render(request,"products.html")
 
 def addproduct(request):
     product=Product(name=request.POST['name'],price=request.POST['price'],qty=request.POST['qty'])
@@ -91,19 +100,53 @@ def updateproduct(request):
     Product.objects.filter(id=id).update(price=request.POST['price'],qty=request.POST['qty'])
     return  render(request,"product.html")
 
-def deleteproduct(request):
-    # product=Product.objects.filter(name=request.POST['name'].strip())
-    #
-    # for i in product:
-    #     id=i.id
-    #
-    # Product.objects.filter(id=id).delete()
-    #send_mail("Test Mail",f"Product Id : {id} has been delete from db",settings.EMAIL_HOST_USER,['se.murugaiyan@gmail.com'])
-    email=EmailMessage("Test Mail","<h1 style='color:pink;border:solid'>Welcome to Test Mail</h1>",settings.EMAIL_HOST_USER,["se.murugaiyan@gmail.com"])
-    email.content_subtype='html'
-    email.send()
-    return render(request,"product.html")
+# def deleteproduct(request):
+#     # product=Product.objects.filter(name=request.POST['name'].strip())
+#     #
+#     # for i in product:
+#     #     id=i.id
+#     #
+#     # Product.objects.filter(id=id).delete()
+#     #send_mail("Test Mail",f"Product Id : {id} has been delete from db",settings.EMAIL_HOST_USER,['se.murugaiyan@gmail.com'])
+#     email=EmailMessage("Test Mail","<h1 style='color:pink;border:solid'>Welcome to Test Mail</h1>",settings.EMAIL_HOST_USER,["se.murugaiyan@gmail.com"])
+#     email.content_subtype='html'
+#     email.send()
+#     return render(request,"product.html")
 
+
+def saveproduct(request):
+    name = request.GET['product']
+    price = request.GET['price']
+    qty = request.GET['qty']
+
+    obj = Product(name=name,price=price,qty=qty)
+    obj.save()
+
+    data = Product.objects.all()
+    return render(request,"products.html",{"data":data})
+
+def editproduct(request):
+    id= request.GET['id']
+    name = request.GET['product']
+    price = request.GET['price']
+    qty = request.GET['qty']
+
+    data = Product.objects.get(id=id)
+    data.price=price
+    data.qty = qty
+    data.save()
+    data = Product.objects.all()
+    return render(request, "products.html", {"data": data})
+
+def deleteproduct(request):
+    id = request.GET['id']
+
+
+    data = Product.objects.get(id=id)
+
+    data.delete()
+    data = Product.objects.all()
+    return render(request, "products.html", {"data": data})
 
 
 
